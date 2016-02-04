@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Todo App</title>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="css/style.css" type="text/css" media="screen" charset="utf-8">
+    <link href="css/alertify.core.css" rel="stylesheet">
+    <link href="css/alertify.default.css" rel="stylesheet">
+
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">ToDo</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+        </div>
+    </div>
+</nav>
+
+
+<div class="container" id="main">
+
+
+</div>
+<script src='js/jquery.js'></script>
+
+<script src='js/bootstrap.min.js'></script>
+<script type="text/javascript" src="js/alertify.min.js"></script>
+<script type="text/javascript" src="js/handlebars-1.0.rc.2.js"></script>
+<script src="js/todoTaskClass.js"></script>
+<script src="js/index.js"></script>
+
+<script id="template-logged" type="text/x-handlebars-template">
+
+
+    {{#if_eq logged 1 }}
+    <!--Add task section-->
+    <div class="col-md-12">
+        <h1>Welcome {{username}}</h1>
+
+        <h2>To Do List</h2>
+
+        <p>
+            <label for="new-task">Add Item</label>
+            <input id="new-task" type="text">
+            <button id="add" class="btn btn-primary">Add</button>
+        <div class="warning"></div>
+        <div class="success"></div>
+        </p>
+    </div>
+    <!--end Add task section-->
+
+
+    <!--All tasks section-->
+    <div class="task-section col-md-3" id="all-section">
+        <h3>All
+            <span id="counter-all"></span></h3>
+        <ul id="all">
+
+
+        </ul>
+        <div id="all-buttons">
+            <button id="remove-all" class="btn btn-danger">Remove All</button>
+            <button id="remove-selected" class="btn btn-warning">Remove Selected</button>
+
+        </div>
+
+    </div>
+    <!--end All tasks section-->
+
+
+    <!--Active tasks section-->
+    <div class="task-section col-md-3" id="active-section">
+        <h3>Active
+            <span id="counter-active"></span></h3>
+        <ul id="incomplete-tasks">
+
+
+        </ul>
+    </div>
+    <!--end Active tasks section-->
+
+    <!--Completed tasks section-->
+    <div class="task-section col-md-3" id="completed-section">
+        <h3>Completed<span id="counter-completed"></span></h3>
+        <ul id="completed-tasks">
+
+        </ul>
+    </div>
+    <!--end Completed tasks section-->
+
+    <!--Favorite tasks section-->
+    <div class="task-section col-md-3" id="favorite-section">
+        <h3>Favorite<span id="counter-favorite"></span></h3>
+        <ul id="favorite-tasks">
+        </ul>
+
+    </div>
+    <!--end Favorite tasks section-->
+
+
+    {{/if_eq}}
+
+    {{#if_eq logged 0 }}
+
+    <div class="col-md-12">
+        <h2>You must be logged in to see this content</h2>
+
+
+    </div>
+
+
+    {{/if_eq}}
+
+
+</script>
+
+<script id="template-navbar" type="text/x-handlebars-template">
+
+
+    {{#if_eq logged 1 }}
+
+    <ul class="nav navbar-nav">
+        <li class="active">
+            <a href="/to-do-tasks/"><i class="fa fa-home"></i> Home </a>
+        </li>
+
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+
+        <li class=""><a href="/laravel-todo/public/logout"><i
+                class="fa fa-sign-in"></i> Logout</a></li>
+
+
+    </ul>
+
+
+    {{/if_eq}}
+
+    {{#if_eq logged 0 }}
+
+
+    <ul class="nav navbar-nav">
+        <li class="active">
+            <a href="/to-do-tasks/"><i class="fa fa-home"></i> Home </a>
+        </li>
+
+    </ul>
+
+    <ul class="nav navbar-nav navbar-right">
+
+        <li class=""><a href="/to-do-tasks/login.html"><i
+                class="fa fa-sign-in"></i> Login</a></li>
+        <li class=""><a
+                href="/to-do-tasks/register.html">Register</a></li>
+
+
+    </ul>
+
+    {{/if_eq}}
+
+
+</script>
+
+
+<script id="template-all" type="text/x-handlebars-template">
+
+
+    {{#each .}}
+
+    {{#if_eq completed 0 }}
+
+    {{#if_eq favorited 0 }}
+
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span
+                class="glyphicon glyphicon-star-empty"></span></button>
+        <button class="complete" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+
+    {{/if_eq}}
+
+    {{/if_eq}}
+
+    {{#if_eq completed 0 }}
+
+    {{#if_eq favorited 1 }}
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span class="glyphicon glyphicon-star"></span>
+        </button>
+        <button class="complete" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+
+    {{/if_eq}}
+
+    {{/if_eq}}
+
+
+    {{#if_eq completed 1 }}
+
+    {{#if_eq favorited 0 }}
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="completed">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span
+                class="glyphicon glyphicon-star-empty"></span></button>
+        <button class="complete red" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+    {{/if_eq}}
+    {{/if_eq}}
+
+
+    {{#if_eq completed 1 }}
+
+    {{#if_eq favorited 1 }}
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="completed">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span class="glyphicon glyphicon-star"></span>
+        </button>
+        <button class="complete red" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+    {{/if_eq}}
+    {{/if_eq}}
+
+
+    {{/each}}
+
+
+</script>
+
+<script id="template-active" type="text/x-handlebars-template">
+
+    {{#each .}}
+
+    {{#if_eq completed 0 }}
+
+    {{#if_eq favorited 0 }}
+
+
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span
+                class="glyphicon glyphicon-star-empty"></span></button>
+        <button class="complete" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+
+    {{/if_eq}}
+    {{/if_eq}}
+
+    {{#if_eq completed 0 }}
+
+    {{#if_eq favorited 1 }}
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span class="glyphicon glyphicon-star"></span>
+        </button>
+        <button class="complete" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+    {{/if_eq}}
+
+    {{/if_eq}}
+
+
+    {{/each}}
+
+
+</script>
+
+<script id="template-favorited" type="text/x-handlebars-template">
+
+    {{#each .}}
+
+    {{#if_eq completed 0 }}
+
+    {{#if_eq favorited 1 }}
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span class="glyphicon glyphicon-star"></span>
+        </button>
+        <button class="complete" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+    {{/if_eq}}
+
+    {{/if_eq}}
+
+
+    {{#if_eq completed 1 }}
+
+    {{#if_eq favorited 1 }}
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="completed">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span class="glyphicon glyphicon-star"></span>
+        </button>
+        <button class="complete red" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+    {{/if_eq}}
+    {{/if_eq}}
+
+
+    {{/each}}
+</script>
+
+<script id="template-completed" type="text/x-handlebars-template">
+    {{#each .}}
+
+    {{#if_eq completed 1 }}
+
+    {{#if_eq favorited 1 }}
+
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="completed">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span class="glyphicon glyphicon-star"></span>
+        </button>
+        <button class="complete red" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+    {{/if_eq}}
+    {{/if_eq}}
+
+
+    {{#if_eq completed 1 }}
+
+    {{#if_eq favorited 0 }}
+
+
+    <li id="task-{{id}}">
+        <input type="checkbox">
+        <label class="completed">{{task_name}}</label>
+        <input type="text" class="inputTask">
+        <button class="edit" data-toggle="tooltip" title="Edit"><span class="glyphicon glyphicon-edit"></span></button>
+        <button class="favorite" data-toggle="tooltip" title="Favorite"><span
+                class="glyphicon glyphicon-star-empty"></span></button>
+        <button class="complete red" data-toggle="tooltip" title="Complete"><span class="glyphicon glyphicon-ok"></span>
+        </button>
+        <button class="delete" data-toggle="tooltip" title="Delete"><span class="glyphicon glyphicon-trash"></span>
+        </button>
+    </li>
+
+
+    {{/if_eq}}
+    {{/if_eq}}
+
+
+    {{/each}}
+</script>
+
+</body>
+
+</html>
+    
+
+    
+    

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Login</title>
+    <link href='http://fonts.googleapis.com/css?family=Lato:300,400,700' rel='stylesheet' type='text/css'>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="screen" charset="utf-8">
+
+
+</head>
+
+<body>
+
+<nav class="navbar navbar-default navbar-inverse">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle Navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">ToDo</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="">
+                    <a href="/to-do-tasks/"><i class="fa fa-home"></i> Home </a>
+                </li>
+
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li class="active"><a href="/to-do-tasks/login.html"><i
+                        class="fa fa-sign-in"></i> Login</a></li>
+                <li class=""><a
+                        href="/to-do-tasks/register.html">Register</a></li>
+
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<div class="container">
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Login</div>
+                    <div class="panel-body">
+
+
+                        <form class="form-horizontal" role="form" method="POST"
+                              action="../laravel-todo/public/auth/login">
+
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">E-Mail Address</label>
+
+                                <div class="col-md-6">
+                                    <input type="email" class="form-control" name="email">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Password</label>
+
+                                <div class="col-md-6">
+                                    <input type="password" class="form-control" name="password">
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="remember"> Remember Me
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-6 col-md-offset-4">
+                                    <button type="submit" class="btn btn-primary">
+                                        Login
+                                    </button>
+
+
+                                </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+<script src='js/jquery.js'></script>
+
+<script src='js/bootstrap.min.js'></script>
+<script type="text/javascript" src="js/handlebars-1.0.rc.2.js"></script>
+<script type="text/javascript" src="js/login.js"></script>
+
+<script id="template-login" type="text/x-handlebars-template">
+
+    {{#if error}}
+    <div class="alert alert-danger">
+        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+        <ul>
+            <li>{{error}}</li>
+
+
+        </ul>
+    </div>
+    {{else}}
+
+    <div class="alert alert-danger">
+        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+        <ul>
+            <li>{{email}}</li>
+            <li>{{password}}</li>
+
+        </ul>
+    </div>
+
+    {{/if}}
+
+
+</script>
+
+
+</body>
+
+</html>
+
+
+
+
